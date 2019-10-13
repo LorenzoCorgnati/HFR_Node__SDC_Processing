@@ -153,9 +153,9 @@ try
         nc.scdt = ncread(SDC_OpenDAP_data_url,'SCDT',[1,1,min(iTime)],[length(site_code),maxSite_dim,length(iTime)]);
         
         % QC variables
-        nc.time_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'TIME_SEADATANET_QC',min(iTime),length(iTime));
-        nc.position_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'POSITION_SEADATANET_QC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.depth_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'DEPTH_SEADATANET_QC',min(iTime),length(iTime));
+        nc.time_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'TIME_QC',min(iTime),length(iTime));
+        nc.position_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'POSITION_QC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
+        nc.depth_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'DEPTH_QC',min(iTime),length(iTime));
         
         nc.qcflag = ncread(SDC_OpenDAP_data_url,'QCflag',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
         nc.owtr_qc = ncread(SDC_OpenDAP_data_url,'OWTR_QC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);

@@ -95,7 +95,7 @@ try
     % Build the cumulative EDMO code list
     [EDMO_code,ia,ic] = unique([NT_EDMO_code; ST_EDMO_code]);
     EDMO_code = EDMO_code';
-    EDMO_codeStr = sprintf('%.0d, ' , EDMO_code);
+    EDMO_codeStr = sprintf('%.0d; ' , EDMO_code);
     EDMO_codeStr = EDMO_codeStr(1:end-2);% strip final comma
     
     % Find the institution_name field from network data
@@ -230,9 +230,9 @@ try
         nc.scdt = ncread(SDC_OpenDAP_data_url,'SCDT',[1,1,min(iTime)],[string15_dim,maxSite_dim,length(iTime)]);
         
         % QC variables
-        nc.time_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'TIME_SEADATANET_QC',min(iTime),length(iTime));
-        nc.position_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'POSITION_SEADATANET_QC',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
-        nc.depth_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'DEPTH_SEADATANET_QC',min(iTime),length(iTime));
+        nc.time_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'TIME_QC',min(iTime),length(iTime));
+        nc.position_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'POSITION_QC',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
+        nc.depth_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'DEPTH_QC',min(iTime),length(iTime));
         nc.qcflag = ncread(SDC_OpenDAP_data_url,'QCflag',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
         nc.vart_qc = ncread(SDC_OpenDAP_data_url,'VART_QC',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
         nc.gdop_qc = ncread(SDC_OpenDAP_data_url,'GDOP_QC',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
