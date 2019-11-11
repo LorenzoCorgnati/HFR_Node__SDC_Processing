@@ -108,6 +108,9 @@ try
     SDC_OpenDAP_data_urlIndex = find(not(cellfun('isempty', strfind(stationFields, 'SDC_OpenDAP_data_url'))));
     SDC_OpenDAP_data_url = stationData{SDC_OpenDAP_data_urlIndex};
     
+    % Retrieve manufacturer info
+    sensorATT = ncreadatt(SDC_OpenDAP_data_url,'/','sensor');
+    
     % Read time and convert it to Matlab time
     nc.time = ncread_cf_time(SDC_OpenDAP_data_url,'TIME');
     
@@ -1124,7 +1127,12 @@ try
     ncwriteatt(ncfile,'VART_QC','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'VART_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'VART_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'VART_QC','comment',char(['Test not applicable to Direction Finding systems. The Temporal Derivative test is applied. Threshold set to ' num2str(Radial_QC_params.TempDerThr.threshold) ' m/s. ']));
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        ncwriteatt(ncfile,'VART_QC','comment',char(['Test not applicable to Direction Finding systems. The Temporal Derivative test is applied.' ...
+            'Threshold set to ' num2str(Total_QC_params.TempDerThr.threshold) ' m/s. ']));
+    elseif(contains(sensorATT,'wera','IgnoreCase',true))
+        ncwriteatt(ncfile,'VART_QC','comment',char(['Threshold set to ' num2str(Total_QC_params.VarThr.threshold) ' m2/s2. ']));
+    end
     ncwriteatt(ncfile,'VART_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'VART_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'VART_QC','scale_factor',int8(1));
@@ -1335,11 +1343,11 @@ try
     ncwriteatt(ncfile, '/', 'metadata_contact',char( 'lorenzo.corgnati@sp.ismar.cnr.it'));
     ncwriteatt(ncfile, '/', 'metadata_date_stamp', char(dateCreated));
     ncwriteatt(ncfile, '/', 'standard_name_vocabulary', char('NetCDF Climate and Forecast (CF) Metadata Convention Standard Name Table Version 1.6'));
-    ncwriteatt(ncfile, '/', 'sensor', char('CODAR SeaSonde'));
+    ncwriteatt(ncfile, '/', 'sensor', char(sensorATT));
     ncwriteatt(ncfile, '/', 'institution_reference', char(institution_websiteStr));
     ncwriteatt(ncfile, '/', 'references', char('High Frequency Radar European common data and metadata model Reference Card: all you need to know about High Frequency Radar (HFR) data harmonization at a glance. http://www.marineinsitu.eu/wp-content/uploads/2018/02/HFR_Data_Model_Reference_Card_v1.pdf'));
     ncwriteatt(ncfile, '/', 'software_name', char('HFR_Combiner'));
-    ncwriteatt(ncfile, '/', 'software_version',char( 'v3.1'));
+    ncwriteatt(ncfile, '/', 'software_version',char( 'v3.3'));
     ncwriteatt(ncfile, '/', 'date_issued', char(dateCreated));
     
 catch err
