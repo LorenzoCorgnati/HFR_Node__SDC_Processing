@@ -806,8 +806,8 @@ try
     
     ncwriteatt(ncfile,'SDN_STATION','long_name',char('Grid label'));
     
-    ncwriteatt(ncfile,'SDN_LOCAL_CDI_ID','long_name',char('SeaDataCloud CDI identifier'));
-    ncwriteatt(ncfile,'SDN_LOCAL_CDI_ID','cf_role',char('grid_id'));
+    ncwriteatt(ncfile,'SDN_LOCAL_CDI_ID','long_name',char('SeaDataNet CDI identifier'));
+    ncwriteatt(ncfile,'SDN_LOCAL_CDI_ID','cf_role',char('timeseries_id'));
     
     ncwriteatt(ncfile,'SDN_EDMO_CODE','long_name',char('European Directory of Marine Organisations code for the CDI partner'));
     ncwriteatt(ncfile,'SDN_EDMO_CODE','units',char('1'));
@@ -1266,7 +1266,7 @@ try
     ncwriteatt(ncfile, '/', 'id', char(dataID));
     % Geo-spatial-temporal
     ncwriteatt(ncfile, '/', 'data_type', char('HF radar radial data'));
-    ncwriteatt(ncfile, '/', 'feature_type', char('surface'));
+%     ncwriteatt(ncfile, '/', 'feature_type', char('surface'));
     geospatial_lat_minIndex = find(not(cellfun('isempty', strfind(networkFields, 'geospatial_lat_min'))));
     ncwriteatt(ncfile, '/', 'geospatial_lat_min', char(num2str(networkData{geospatial_lat_minIndex})));
     geospatial_lat_maxIndex = find(not(cellfun('isempty', strfind(networkFields, 'geospatial_lat_max'))));
