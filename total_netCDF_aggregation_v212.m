@@ -456,9 +456,9 @@ try
     startVec = datevec(nc.time(1));
     endVec = datevec(nc.time(length(nc.time)));
     % Check if the aggregation period is exactly 1 year
-    if(strcmp(timeCoverageDuration,'P1YT'))
+    if(timeSpan==12)
         time_str = sprintf('%.4d',startVec(1));
-    elseif(strcmp(timeCoverageDuration,'P1MT'))
+    elseif(timeSpan==1)
         time_str = sprintf('%.4d%.2d',startVec(1),startVec(2));
     else
         time_str = sprintf('%.4d%.2d%.2d_%.4d%.2d%.2d',startVec(1),startVec(2),startVec(3),endVec(1),endVec(2),endVec(3));
@@ -1135,7 +1135,7 @@ try
     
     % Geo-spatial-temporal
     ncwriteatt(ncfile,'/','data_type', char('HF radar total data'));
-%     ncwriteatt(ncfile,'/','feature_type',char('surface'));
+    ncwriteatt(ncfile,'/','featureType',char('surface'));
     geospatial_lat_minIndex = find(not(cellfun('isempty', strfind(networkFields, 'geospatial_lat_min'))));
     ncwriteatt(ncfile,'/','geospatial_lat_min',char(num2str(networkData{geospatial_lat_minIndex})));
     geospatial_lat_maxIndex = find(not(cellfun('isempty', strfind(networkFields, 'geospatial_lat_max'))));
