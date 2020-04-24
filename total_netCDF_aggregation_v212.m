@@ -525,7 +525,9 @@ try
     EDIOS_Series_ID = networkData{network_idIndex};
     site_code = EDIOS_Series_ID;
     platform_code = [EDIOS_Series_ID '-Total'];
-    dataID = [EDIOS_Series_ID '-Total_' time_coll{1} '_' time_coll{2}];
+%     dataID = [EDIOS_Series_ID '-Total_' time_coll{1} '_' time_coll{2}];
+%     dataID = [EDIOS_Series_ID '-Total_' time_str];
+    dataID = ['TV_HF_' networkData{network_idIndex} '_' time_str];
     metadata_pageIndex = find(not(cellfun('isempty', strfind(networkFields, 'metadata_page'))));
     TDS_catalog = networkData{metadata_pageIndex};
     xlink = ['<sdn_reference xlink:href="' TDS_catalog '" xlink:role="" xlink:type="URL"/>'];

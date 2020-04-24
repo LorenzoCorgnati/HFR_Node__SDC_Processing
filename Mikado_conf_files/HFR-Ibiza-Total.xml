@@ -25,7 +25,7 @@
                   <select>
                      <col>
                         <var>var01</var>
-                        <sql>institution_edmo_code</sql>
+                        <sql>partner_edmo_code</sql>
                      </col>
                   </select>
                   <from>total_CDIconf_tb</from>
@@ -102,7 +102,7 @@
                   <select>
                      <col>
                         <var>var09</var>
-                        <sql>institution_edmo_code</sql>
+                        <sql>custodian_edmo_code</sql>
                      </col>
                   </select>
                   <from>total_CDIconf_tb</from>
@@ -201,7 +201,7 @@
                   <select>
                      <col>
                         <var>var36</var>
-                        <sql>institution_edmo_code</sql>
+                        <sql>distributor_edmo_code</sql>
                      </col>
                   </select>
                   <from>total_CDIconf_tb</from>

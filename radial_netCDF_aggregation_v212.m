@@ -451,7 +451,8 @@ end
 
 try
     % Define id and metadata resources
-    dataID = [EDIOS_Series_ID '-' EDIOS_Platform_ID '_' time_coll{1} '_' time_coll{2}];
+%     dataID = [EDIOS_Series_ID '-' EDIOS_Platform_ID '_' time_coll{1} '_' time_coll{2}];
+    dataID = ['RV_HF_' platform_code '_' time_str];
     metadata_pageIndex = find(not(cellfun('isempty', strfind(networkFields, 'metadata_page'))));
     TDS_catalog = networkData{metadata_pageIndex};
     xlink = ['<sdn_reference xlink:href="' TDS_catalog '" xlink:role="" xlink:type="URL"/>'];
