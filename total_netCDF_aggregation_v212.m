@@ -237,7 +237,12 @@ try
         nc.nsct = ncread(SDC_OpenDAP_data_url,'NSCT',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
         nc.ewcs = ncread(SDC_OpenDAP_data_url,'EWCS',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
         nc.nscs = ncread(SDC_OpenDAP_data_url,'NSCS',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
-        nc.ccov = ncread(SDC_OpenDAP_data_url,'CCOV',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
+        if(contains(sensorATT,'codar','IgnoreCase',true))
+            nc.ccov = ncread(SDC_OpenDAP_data_url,'CCOV',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
+        elseif(contains(sensorATT,'wera','IgnoreCase',true))
+            nc.uacc = ncread(SDC_OpenDAP_data_url,'UACC',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
+            nc.vacc = ncread(SDC_OpenDAP_data_url,'VACC',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
+        end
         nc.gdop = ncread(SDC_OpenDAP_data_url,'GDOP',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
         nc.narx = ncread(SDC_OpenDAP_data_url,'NARX',min(iTime),length(iTime));
         nc.natx = ncread(SDC_OpenDAP_data_url,'NATX',min(iTime),length(iTime));
@@ -525,8 +530,8 @@ try
     EDIOS_Series_ID = networkData{network_idIndex};
     site_code = EDIOS_Series_ID;
     platform_code = [EDIOS_Series_ID '-Total'];
-%     dataID = [EDIOS_Series_ID '-Total_' time_coll{1} '_' time_coll{2}];
-%     dataID = [EDIOS_Series_ID '-Total_' time_str];
+    %     dataID = [EDIOS_Series_ID '-Total_' time_coll{1} '_' time_coll{2}];
+    %     dataID = [EDIOS_Series_ID '-Total_' time_str];
     dataID = ['TV_HF_' networkData{network_idIndex} '_' time_str];
     metadata_pageIndex = find(not(cellfun('isempty', strfind(networkFields, 'metadata_page'))));
     TDS_catalog = networkData{metadata_pageIndex};
@@ -626,11 +631,25 @@ try
         'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
         'Format',ncfmt);
     
-    nccreate(ncfile,'CCOV',...
-        'Dimensions',{'LONGITUDE',lon_dim,'LATITUDE',lat_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
-        'Datatype','int32',...
-        'FillValue',netcdf.getConstant('NC_FILL_INT'),...
-        'Format',ncfmt);
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        nccreate(ncfile,'CCOV',...
+            'Dimensions',{'LONGITUDE',lon_dim,'LATITUDE',lat_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int32',...
+            'FillValue',netcdf.getConstant('NC_FILL_INT'),...
+            'Format',ncfmt);
+    elseif(contains(sensorATT,'wera','IgnoreCase',true))
+        nccreate(ncfile,'UACC',...
+            'Dimensions',{'LONGITUDE',lon_dim,'LATITUDE',lat_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'VACC',...
+            'Dimensions',{'LONGITUDE',lon_dim,'LATITUDE',lat_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+    end
     
     nccreate(ncfile,'GDOP',...
         'Dimensions',{'LONGITUDE',lon_dim,'LATITUDE',lat_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
@@ -867,20 +886,50 @@ try
     ncwriteatt(ncfile,'NSCS','sdn_uom_urn',char('SDN:P06::UVAA'));
     ncwriteatt(ncfile,'NSCS','ancillary_variables',char('QCflag, VART_QC'));
     
-    ncwriteatt(ncfile,'CCOV','long_name',char('Covariance of Surface Sea Water Velocity'));
-    %         ncwriteatt(ncfile,'CCOV','standard_name',char('surface_sea_water_velocity_covariance'));
-    ncwriteatt(ncfile,'CCOV','units',char('m2 s-2'));
-    ncwriteatt(ncfile,'CCOV','valid_range',int32([(-10-addOffset)./(scaleFactor^2), (10-addOffset)./(scaleFactor^2)]));
-    ncwriteatt(ncfile,'CCOV','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    %         ncwriteatt(ncfile,'CCOV','valid_min',double(-10.0));
-    %         ncwriteatt(ncfile,'CCOV','valid_max',double(10.0));
-    ncwriteatt(ncfile,'CCOV','scale_factor',double(scaleFactor^2));
-    ncwriteatt(ncfile,'CCOV','add_offset',double(addOffset));
-    ncwriteatt(ncfile,'CCOV','sdn_parameter_name',char(''));
-    ncwriteatt(ncfile,'CCOV','sdn_parameter_urn',char(''));
-    ncwriteatt(ncfile,'CCOV','sdn_uom_name',char('Square metres per second squared'));
-    ncwriteatt(ncfile,'CCOV','sdn_uom_urn',char('SDN:P06::SQM2'));
-    ncwriteatt(ncfile,'CCOV','ancillary_variables',char('QCflag'));
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        ncwriteatt(ncfile,'CCOV','long_name',char('Covariance of Surface Sea Water Velocity'));
+        %         ncwriteatt(ncfile,'CCOV','standard_name',char('surface_sea_water_velocity_covariance'));
+        ncwriteatt(ncfile,'CCOV','units',char('m2 s-2'));
+        ncwriteatt(ncfile,'CCOV','valid_range',int32([(-10-addOffset)./(scaleFactor^2), (10-addOffset)./(scaleFactor^2)]));
+        ncwriteatt(ncfile,'CCOV','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        %         ncwriteatt(ncfile,'CCOV','valid_min',double(-10.0));
+        %         ncwriteatt(ncfile,'CCOV','valid_max',double(10.0));
+        ncwriteatt(ncfile,'CCOV','scale_factor',double(scaleFactor^2));
+        ncwriteatt(ncfile,'CCOV','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'CCOV','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'CCOV','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'CCOV','sdn_uom_name',char('Square metres per second squared'));
+        ncwriteatt(ncfile,'CCOV','sdn_uom_urn',char('SDN:P06::SQM2'));
+        ncwriteatt(ncfile,'CCOV','ancillary_variables',char('QCflag'));
+    elseif(contains(sensorATT,'wera','IgnoreCase',true))
+        ncwriteatt(ncfile,'UACC','long_name',char('Accuracy of Surface Eastward Sea Water Velocity'));
+        ncwriteatt(ncfile,'UACC','units',char('m s-1'));
+        %         ncwriteatt(ncfile,'UACC','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
+        ncwriteatt(ncfile,'UACC','valid_min',int16((-10-addOffset)./scaleFactor));
+        ncwriteatt(ncfile,'UACC','valid_max',int16((10-addOffset)./scaleFactor));
+        ncwriteatt(ncfile,'UACC','coordinates',char('TIME DEPH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'UACC','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'UACC','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'UACC','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'UACC','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'UACC','sdn_uom_name',char('Metres per second'));
+        ncwriteatt(ncfile,'UACC','sdn_uom_urn',char('SDN:P06::UVAA'));
+        ncwriteatt(ncfile,'UACC','ancillary_variables',char('QCflag, VART_QC'));
+        
+        ncwriteatt(ncfile,'VACC','long_name',char('Accuracy of Surface Northward Sea Water Velocity'));
+        ncwriteatt(ncfile,'VACC','units',char('m s-1'));
+        %         ncwriteatt(ncfile,'VACC','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
+        ncwriteatt(ncfile,'VACC','valid_min',int16((-10-addOffset)./scaleFactor));
+        ncwriteatt(ncfile,'VACC','valid_max',int16((10-addOffset)./scaleFactor));
+        ncwriteatt(ncfile,'VACC','coordinates',char('TIME DEPH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'VACC','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'VACC','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'VACC','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'VACC','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'VACC','sdn_uom_name',char('Metres per second'));
+        ncwriteatt(ncfile,'VACC','sdn_uom_urn',char('SDN:P06::UVAA'));
+        ncwriteatt(ncfile,'VACC','ancillary_variables',char('QCflag, VART_QC'));
+    end
     
     ncwriteatt(ncfile,'GDOP','long_name',char('Geometrical Dilution Of Precision'));
     %         ncwriteatt(ncfile,'GDOP','standard_name',char('gdop'));
@@ -951,7 +1000,7 @@ try
         ncwriteatt(ncfile,'VART_QC','comment',char(['Test not applicable to Direction Finding systems. The Temporal Derivative test is applied.' ...
             'Threshold set to ' num2str(Total_QC_params.TempDerThr.threshold) ' m/s. ']));
     elseif(contains(sensorATT,'wera','IgnoreCase',true))
-        ncwriteatt(ncfile,'VART_QC','comment',char(['Threshold set to ' num2str(Total_QC_params.VarThr.threshold) ' m2/s2. ']));
+        ncwriteatt(ncfile,'VART_QC','comment',char(['Threshold set to ' num2str(Total_QC_params.VarThr) ' m2/s2. ']));
     end
     ncwriteatt(ncfile,'VART_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'VART_QC','sdn_conventions_urn',char('SDN:L20::'));
@@ -1094,7 +1143,12 @@ try
     ncwrite(ncfile,'NSCT',nc.nsct);
     ncwrite(ncfile,'EWCS',nc.ewcs);
     ncwrite(ncfile,'NSCS',nc.nscs);
-    ncwrite(ncfile,'CCOV',nc.ccov);
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        ncwrite(ncfile,'CCOV',nc.ccov);
+    elseif(contains(sensorATT,'wera','IgnoreCase',true))
+        ncwrite(ncfile,'UACC',nc.uacc);
+        ncwrite(ncfile,'VACC',nc.vacc);
+    end
     ncwrite(ncfile,'GDOP',nc.gdop);
     ncwrite(ncfile,'NARX',nc.narx);
     ncwrite(ncfile,'NATX',nc.natx);
