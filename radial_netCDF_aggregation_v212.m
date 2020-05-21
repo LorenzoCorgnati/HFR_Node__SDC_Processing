@@ -26,7 +26,7 @@
 %         dataID: SDN local CDI id.
 
 % Author: Lorenzo Corgnati
-% Date: December 4, 2019
+% Date: May 20, 2020
 
 % E-mail: lorenzo.corgnati@sp.ismar.cnr.it
 %%
@@ -125,27 +125,44 @@ try
     % Read variables
     if (~isempty(nc.time))
         % Coordinate variables
-        nc.bear = ncread(SDC_OpenDAP_data_url,'BEAR');
-        nc.rnge = ncread(SDC_OpenDAP_data_url,'RNGE');
+        if(contains(sensorATT,'codar','IgnoreCase',true))
+            nc.bear = ncread(SDC_OpenDAP_data_url,'BEAR');
+            nc.rnge = ncread(SDC_OpenDAP_data_url,'RNGE');
+            lDim1 = length(nc.rnge);
+            lDim2 = length(nc.bear);
+            strDim1 = 'RNGE';
+            strDim2 = 'BEAR';
+        end
         nc.depth = ncread(SDC_OpenDAP_data_url,'DEPH');
         
         nc.latitude = ncread(SDC_OpenDAP_data_url,'LATITUDE');
         nc.longitude = ncread(SDC_OpenDAP_data_url,'LONGITUDE');
+        if(contains(sensorATT,'wera','IgnoreCase',true))
+            lDim1 = length(nc.longitude);
+            lDim2 = length(nc.latitude);
+            strDim1 = 'LONGITUDE';
+            strDim2 = 'LATITUDE';
+        end
         
         % Data variables
-        nc.rdva = ncread(SDC_OpenDAP_data_url,'RDVA',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.drva = ncread(SDC_OpenDAP_data_url,'DRVA',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.ewct = ncread(SDC_OpenDAP_data_url,'EWCT',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.nsct = ncread(SDC_OpenDAP_data_url,'NSCT',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.espc = ncread(SDC_OpenDAP_data_url,'ESPC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.etmp = ncread(SDC_OpenDAP_data_url,'ETMP',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.maxv = ncread(SDC_OpenDAP_data_url,'MAXV',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.minv = ncread(SDC_OpenDAP_data_url,'MINV',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.ersc = ncread(SDC_OpenDAP_data_url,'ERSC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.ertc = ncread(SDC_OpenDAP_data_url,'ERTC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.xdst = ncread(SDC_OpenDAP_data_url,'XDST');
-        nc.ydst = ncread(SDC_OpenDAP_data_url,'YDST');
-        nc.sprc = ncread(SDC_OpenDAP_data_url,'SPRC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
+        nc.rdva = ncread(SDC_OpenDAP_data_url,'RDVA',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        nc.drva = ncread(SDC_OpenDAP_data_url,'DRVA',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        nc.ewct = ncread(SDC_OpenDAP_data_url,'EWCT',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        nc.nsct = ncread(SDC_OpenDAP_data_url,'NSCT',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        if(contains(sensorATT,'codar','IgnoreCase',true))
+            nc.espc = ncread(SDC_OpenDAP_data_url,'ESPC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+            nc.etmp = ncread(SDC_OpenDAP_data_url,'ETMP',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+            nc.maxv = ncread(SDC_OpenDAP_data_url,'MAXV',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+            nc.minv = ncread(SDC_OpenDAP_data_url,'MINV',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+            nc.ersc = ncread(SDC_OpenDAP_data_url,'ERSC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+            nc.ertc = ncread(SDC_OpenDAP_data_url,'ERTC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+            nc.xdst = ncread(SDC_OpenDAP_data_url,'XDST');
+            nc.ydst = ncread(SDC_OpenDAP_data_url,'YDST');
+            nc.sprc = ncread(SDC_OpenDAP_data_url,'SPRC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        elseif(contains(sensorATT,'wera','IgnoreCase',true))
+            nc.hcss = ncread(SDC_OpenDAP_data_url,'HCSS',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+            nc.eacc = ncread(SDC_OpenDAP_data_url,'EACC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        end
         nc.narx = ncread(SDC_OpenDAP_data_url,'NARX',min(iTime),length(iTime));
         nc.natx = ncread(SDC_OpenDAP_data_url,'NATX',min(iTime),length(iTime));
         nc.sltr = ncread(SDC_OpenDAP_data_url,'SLTR',[1,min(iTime)],[maxSite_dim,length(iTime)]);
@@ -157,14 +174,14 @@ try
         
         % QC variables
         nc.time_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'TIME_QC',min(iTime),length(iTime));
-        nc.position_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'POSITION_QC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
+        nc.position_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'POSITION_QC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
         nc.depth_seadatanet_qc = ncread(SDC_OpenDAP_data_url,'DEPH_QC',min(iTime),length(iTime));
         
-        nc.qcflag = ncread(SDC_OpenDAP_data_url,'QCflag',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.owtr_qc = ncread(SDC_OpenDAP_data_url,'OWTR_QC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.mdfl_qc = ncread(SDC_OpenDAP_data_url,'MDFL_QC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.vart_qc = ncread(SDC_OpenDAP_data_url,'VART_QC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
-        nc.cspd_qc = ncread(SDC_OpenDAP_data_url,'CSPD_QC',[1,1,1,min(iTime)],[length(nc.rnge),length(nc.bear),length(nc.depth),length(iTime)]);
+        nc.qcflag = ncread(SDC_OpenDAP_data_url,'QCflag',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        nc.owtr_qc = ncread(SDC_OpenDAP_data_url,'OWTR_QC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        nc.mdfl_qc = ncread(SDC_OpenDAP_data_url,'MDFL_QC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        nc.vart_qc = ncread(SDC_OpenDAP_data_url,'VART_QC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
+        nc.cspd_qc = ncread(SDC_OpenDAP_data_url,'CSPD_QC',[1,1,1,min(iTime)],[lDim1,lDim2,length(nc.depth),length(iTime)]);
         nc.avrb_qc = ncread(SDC_OpenDAP_data_url,'AVRB_QC',min(iTime),length(iTime));
         nc.rdct_qc = ncread(SDC_OpenDAP_data_url,'RDCT_QC',min(iTime),length(iTime));
     else
@@ -278,8 +295,8 @@ end
 %% Set physical dimensions
 try
     time_dim = length(iTime);
-    bear_dim = length(nc.bear);
-    rnge_dim = length(nc.rnge);
+    %     bear_dim = length(nc.bear);
+    %     rnge_dim = length(nc.rnge);
     depth_dim = 1;
 catch err
     disp(['[' datestr(now) '] - - ERROR in ' mfilename ' -> ' err.message]);
@@ -382,7 +399,7 @@ try
     startVec = datevec(nc.time(1));
     endVec = datevec(nc.time(length(nc.time)));
     % Check if the aggregation period is exactly 1 year
-    if(rimeSpan==12)
+    if(timeSpan==12)
         time_str = sprintf('%.4d',startVec(1));
     elseif(timeSpan==1)
         time_str = sprintf('%.4d%.2d',startVec(1),startVec(2));
@@ -416,24 +433,24 @@ end
 try
     institution_websiteIndex = find(not(cellfun('isempty', strfind(stationFields, 'institution_website'))));
     institution_websiteStr = stationData{institution_websiteIndex};
-%     if(~isempty(strfind(institution_websiteStr,'http://')))
-%         tmpStr = strrep(institution_websiteStr,'http://','');
-%     elseif(~isempty(strfind(institution_websiteStr,'https://')))
-%         tmpStr = strrep(institution_websiteStr,'https://','');
-%     else
-%         tmpStr = institution_websiteStr;
-%     end
-%     tmpStr = strrep(tmpStr,'www.','');
-%     tmpStr = strrep(tmpStr,'/','');
-%     splitStr = strsplit(tmpStr,'.');
-%     naming_authorityStr = [];
-%     for split_idx=length(splitStr):-1:1
-%         naming_authorityStr = [naming_authorityStr splitStr{split_idx}];
-%         if(split_idx~=1)
-%             naming_authorityStr = [naming_authorityStr '.'];
-%         end
-%     end
-%     naming_authorityStr= naming_authorityStr(~isspace(naming_authorityStr));
+    %     if(~isempty(strfind(institution_websiteStr,'http://')))
+    %         tmpStr = strrep(institution_websiteStr,'http://','');
+    %     elseif(~isempty(strfind(institution_websiteStr,'https://')))
+    %         tmpStr = strrep(institution_websiteStr,'https://','');
+    %     else
+    %         tmpStr = institution_websiteStr;
+    %     end
+    %     tmpStr = strrep(tmpStr,'www.','');
+    %     tmpStr = strrep(tmpStr,'/','');
+    %     splitStr = strsplit(tmpStr,'.');
+    %     naming_authorityStr = [];
+    %     for split_idx=length(splitStr):-1:1
+    %         naming_authorityStr = [naming_authorityStr splitStr{split_idx}];
+    %         if(split_idx~=1)
+    %             naming_authorityStr = [naming_authorityStr '.'];
+    %         end
+    %     end
+    %     naming_authorityStr= naming_authorityStr(~isspace(naming_authorityStr));
     naming_authorityStr = 'eu.eurogoos';
 catch err
     disp(['[' datestr(now) '] - - ERROR in ' mfilename ' -> ' err.message]);
@@ -451,7 +468,7 @@ end
 
 try
     % Define id and metadata resources
-%     dataID = [EDIOS_Series_ID '-' EDIOS_Platform_ID '_' time_coll{1} '_' time_coll{2}];
+    %     dataID = [EDIOS_Series_ID '-' EDIOS_Platform_ID '_' time_coll{1} '_' time_coll{2}];
     dataID = ['RV_HF_' platform_code '_' time_str];
     metadata_pageIndex = find(not(cellfun('isempty', strfind(networkFields, 'metadata_page'))));
     TDS_catalog = networkData{metadata_pageIndex};
@@ -487,28 +504,41 @@ try
         'Datatype','double',...
         'Format',ncfmt);
     
-    nccreate(ncfile,'BEAR',...
-        'Dimensions',{'BEAR',bear_dim},...
-        'Datatype','single',...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'RNGE',...
-        'Dimensions',{'RNGE',rnge_dim},...
-        'Datatype','single',...
-        'Format',ncfmt);
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        nccreate(ncfile,'BEAR',...
+            'Dimensions',{'BEAR',lDim2},...
+            'Datatype','single',...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'RNGE',...
+            'Dimensions',{'RNGE',lDim1},...
+            'Datatype','single',...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'LATITUDE',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2},...
+            'Datatype','single',...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'LONGITUDE',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2},...
+            'Datatype','single',...
+            'Format',ncfmt);
+        
+    elseif(contains(sensorATT,'wera','IgnoreCase',true))
+        nccreate(ncfile,'LATITUDE',...
+            'Dimensions',{'LATITUDE',lDim2},...
+            'Datatype','single',...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'LONGITUDE',...
+            'Dimensions',{'LONGITUDE',lDim1},...
+            'Datatype','single',...
+            'Format',ncfmt);
+    end
     
     nccreate(ncfile,'DEPTH',...
         'Dimensions',{'DEPTH',depth_dim},...
-        'Datatype','single',...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'LATITUDE',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim},...
-        'Datatype','single',...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'LONGITUDE',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim},...
         'Datatype','single',...
         'Format',ncfmt);
     
@@ -547,82 +577,97 @@ try
         'Format',ncfmt);
     
     nccreate(ncfile,'RDVA',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int16',...
         'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
         'Format',ncfmt);
     
     nccreate(ncfile,'DRVA',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int32',...
         'FillValue', netcdf.getConstant('NC_FILL_INT'),...
         'Format',ncfmt);
     
     nccreate(ncfile,'EWCT',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int16',...
         'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
         'Format',ncfmt);
     
     nccreate(ncfile,'NSCT',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int16',...
         'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
         'Format',ncfmt);
     
-    nccreate(ncfile,'ESPC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
-        'Datatype','int16',...
-        'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'ETMP',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
-        'Datatype','int16',...
-        'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'MAXV',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
-        'Datatype','int16',...
-        'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'MINV',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
-        'Datatype','int16',...
-        'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'ERSC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
-        'Datatype','int16',...
-        'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'ERTC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
-        'Datatype','int16',...
-        'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'XDST',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim},...
-        'Datatype','int32',...
-        'FillValue', netcdf.getConstant('NC_FILL_INT'),...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'YDST',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim},...
-        'Datatype','int32',...
-        'FillValue',netcdf.getConstant('NC_FILL_INT'),...
-        'Format',ncfmt);
-    
-    nccreate(ncfile,'SPRC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
-        'Datatype','int16',...
-        'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
-        'Format',ncfmt);
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        nccreate(ncfile,'ESPC',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'ETMP',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'MAXV',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'MINV',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'ERSC',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'ERTC',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'XDST',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2},...
+            'Datatype','int32',...
+            'FillValue', netcdf.getConstant('NC_FILL_INT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'YDST',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2},...
+            'Datatype','int32',...
+            'FillValue',netcdf.getConstant('NC_FILL_INT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'SPRC',...
+            'Dimensions',{'RNGE',lDim1,'BEAR',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue', netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+        
+    elseif(contains(sensorATT,'wera','IgnoreCase',true))
+        nccreate(ncfile,'HCSS',...
+            'Dimensions',{'LONGITUDE',lDim1,'LATITUDE',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int32',...
+            'FillValue',netcdf.getConstant('NC_FILL_INT'),...
+            'Format',ncfmt);
+        
+        nccreate(ncfile,'EACC',...
+            'Dimensions',{'LONGITUDE',lDim1,'LATITUDE',lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
+            'Datatype','int16',...
+            'FillValue',netcdf.getConstant('NC_FILL_SHORT'),...
+            'Format',ncfmt);
+    end
     
     nccreate(ncfile,'NARX',...
         'Dimensions',{'TIME',time_dim},...
@@ -679,7 +724,7 @@ try
         'Format',ncfmt);
     
     nccreate(ncfile,'POSITION_SEADATANET_QC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int8',...
         'FillValue',int8(57),...
         'Format',ncfmt);
@@ -691,31 +736,31 @@ try
         'Format',ncfmt);
     
     nccreate(ncfile,'QCflag',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int8',...
         'FillValue',int8(57),...
         'Format',ncfmt);
     
     nccreate(ncfile,'OWTR_QC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int8',...
         'FillValue',int8(57),...
         'Format',ncfmt);
     
     nccreate(ncfile,'MDFL_QC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int8',...
         'FillValue',int8(57),...
         'Format',ncfmt);
     
     nccreate(ncfile,'VART_QC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int8',...
         'FillValue',int8(57),...
         'Format',ncfmt);
     
     nccreate(ncfile,'CSPD_QC',...
-        'Dimensions',{'RNGE',rnge_dim,'BEAR',bear_dim, 'DEPTH', depth_dim, 'TIME',time_dim},...
+        'Dimensions',{strDim1,lDim1,strDim2,lDim2, 'DEPTH', depth_dim, 'TIME',time_dim},...
         'Datatype','int8',...
         'FillValue',int8(57),...
         'Format',ncfmt);
@@ -746,23 +791,25 @@ try
     ncwriteatt(ncfile,'TIME','sdn_uom_urn',char('SDN:P06::UTAA'));
     ncwriteatt(ncfile,'TIME','ancillary_variables',char('TIME_SEADATANET_QC'));
     
-    ncwriteatt(ncfile,'BEAR','long_name',char('Bearing away from instrument'));
-    ncwriteatt(ncfile,'BEAR','units',char('degrees_true'));
-    ncwriteatt(ncfile,'BEAR','axis',char('X'));
-    ncwriteatt(ncfile,'BEAR','sdn_parameter_name',char('Bearing'));
-    ncwriteatt(ncfile,'BEAR','sdn_parameter_urn',char('SDN:P01::BEARRFTR'));
-    ncwriteatt(ncfile,'BEAR','sdn_uom_name',char('Degrees true'));
-    ncwriteatt(ncfile,'BEAR','sdn_uom_urn',char('SDN:P06::UABB'));
-    ncwriteatt(ncfile,'BEAR','ancillary_variables',char('POSITION_SEADATANET_QC'));
-    
-    ncwriteatt(ncfile,'RNGE','long_name',char('Range away from instrument'));
-    ncwriteatt(ncfile,'RNGE','units',char('km'));
-    ncwriteatt(ncfile,'RNGE','axis',char('Y'));
-    ncwriteatt(ncfile,'RNGE','sdn_parameter_name',char('Range (from fixed reference point) by unspecified GPS system'));
-    ncwriteatt(ncfile,'RNGE','sdn_parameter_urn',char('SDN:P01::RIFNAX01'));
-    ncwriteatt(ncfile,'RNGE','sdn_uom_name',char('Kilometres'));
-    ncwriteatt(ncfile,'RNGE','sdn_uom_urn',char('SDN:P06::ULKM'));
-    ncwriteatt(ncfile,'RNGE','ancillary_variables',char('POSITION_SEADATANET_QC'));
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        ncwriteatt(ncfile,'BEAR','long_name',char('Bearing away from instrument'));
+        ncwriteatt(ncfile,'BEAR','units',char('degrees_true'));
+        ncwriteatt(ncfile,'BEAR','axis',char('X'));
+        ncwriteatt(ncfile,'BEAR','sdn_parameter_name',char('Bearing'));
+        ncwriteatt(ncfile,'BEAR','sdn_parameter_urn',char('SDN:P01::BEARRFTR'));
+        ncwriteatt(ncfile,'BEAR','sdn_uom_name',char('Degrees true'));
+        ncwriteatt(ncfile,'BEAR','sdn_uom_urn',char('SDN:P06::UABB'));
+        ncwriteatt(ncfile,'BEAR','ancillary_variables',char('POSITION_SEADATANET_QC'));
+        
+        ncwriteatt(ncfile,'RNGE','long_name',char('Range away from instrument'));
+        ncwriteatt(ncfile,'RNGE','units',char('km'));
+        ncwriteatt(ncfile,'RNGE','axis',char('Y'));
+        ncwriteatt(ncfile,'RNGE','sdn_parameter_name',char('Range (from fixed reference point) by unspecified GPS system'));
+        ncwriteatt(ncfile,'RNGE','sdn_parameter_urn',char('SDN:P01::RIFNAX01'));
+        ncwriteatt(ncfile,'RNGE','sdn_uom_name',char('Kilometres'));
+        ncwriteatt(ncfile,'RNGE','sdn_uom_urn',char('SDN:P06::ULKM'));
+        ncwriteatt(ncfile,'RNGE','ancillary_variables',char('POSITION_SEADATANET_QC'));
+    end
     
     ncwriteatt(ncfile,'DEPTH','long_name',char('Depth'));
     ncwriteatt(ncfile,'DEPTH','standard_name',char('depth'));
@@ -869,113 +916,142 @@ try
     ncwriteatt(ncfile,'NSCT','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
     ncwriteatt(ncfile,'NSCT','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, VART_QC, CSPD_QC, AVRB_QC, RDCT_QC'));
     
-    ncwriteatt(ncfile,'ESPC','long_name',char('Radial Standard Deviation of Current Velocity over the Scatter Patch'));
-    ncwriteatt(ncfile,'ESPC','units',char('m s-1'));
-    ncwriteatt(ncfile,'ESPC','scale_factor',double(scaleFactor));
-    ncwriteatt(ncfile,'ESPC','add_offset',double(addOffset));
-    ncwriteatt(ncfile,'ESPC','sdn_parameter_name',char(''));
-    ncwriteatt(ncfile,'ESPC','sdn_parameter_urn',char(''));
-    ncwriteatt(ncfile,'ESPC','sdn_uom_name',char('Metres per second'));
-    ncwriteatt(ncfile,'ESPC','sdn_uom_urn',char('SDN:P06::UVAA'));
-    ncwriteatt(ncfile,'ESPC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'ESPC','valid_range',int16([(-32-addOffset)./scaleFactor, (32-addOffset)./scaleFactor]));
-    ncwriteatt(ncfile,'ESPC','ancillary_variables',char('QCflag, VART_QC'));
-    
-    ncwriteatt(ncfile,'ETMP','long_name',char('Radial Standard Deviation of Current Velocity over Coverage Period'));
-    ncwriteatt(ncfile,'ETMP','units',char('m s-1'));
-    ncwriteatt(ncfile,'ETMP','scale_factor',double(scaleFactor));
-    ncwriteatt(ncfile,'ETMP','add_offset',double(addOffset));
-    ncwriteatt(ncfile,'ETMP','sdn_parameter_name',char(''));
-    ncwriteatt(ncfile,'ETMP','sdn_parameter_urn',char(''));
-    ncwriteatt(ncfile,'ETMP','sdn_uom_name',char('Metres per second'));
-    ncwriteatt(ncfile,'ETMP','sdn_uom_urn',char('SDN:P06::UVAA'));
-    ncwriteatt(ncfile,'ETMP','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'ETMP','valid_range',int16([(-32-addOffset)./scaleFactor, (32-addOffset)./scaleFactor]));
-    ncwriteatt(ncfile,'ETMP','ancillary_variables',char('QCflag, VART_QC'));
-    
-    ncwriteatt(ncfile,'MINV','long_name',char('Radial Sea Water Velocity Away From Instrument Minimum'));
-    ncwriteatt(ncfile,'MINV','units',char('m s-1'));
-    ncwriteatt(ncfile,'MINV','scale_factor',double(scaleFactor));
-    ncwriteatt(ncfile,'MINV','add_offset',double(addOffset));
-    ncwriteatt(ncfile,'MINV','sdn_parameter_name',char('Current speed (Eulerian) in the water body by directional range-gated radar'));
-    ncwriteatt(ncfile,'MINV','sdn_parameter_urn',char('SDN:P01::LCSAWVRD'));
-    ncwriteatt(ncfile,'MINV','sdn_uom_name',char('Metres per second'));
-    ncwriteatt(ncfile,'MINV','sdn_uom_urn',char('SDN:P06::UVAA'));
-    ncwriteatt(ncfile,'MINV','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'MINV','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
-    ncwriteatt(ncfile,'MINV','ancillary_variables',char('QCflag, MDFL_QC, VART_QC, CSPD_QC'));
-    
-    ncwriteatt(ncfile,'MAXV','long_name',char('Radial Sea Water Velocity Away From Instrument Maximum'));
-    ncwriteatt(ncfile,'MAXV','units',char('m s-1'));
-    ncwriteatt(ncfile,'MAXV','scale_factor',double(scaleFactor));
-    ncwriteatt(ncfile,'MAXV','add_offset',double(addOffset));
-    ncwriteatt(ncfile,'MAXV','sdn_parameter_name',char('Current speed (Eulerian) in the water body by directional range-gated radar'));
-    ncwriteatt(ncfile,'MAXV','sdn_parameter_urn',char('SDN:P01::LCSAWVRD'));
-    ncwriteatt(ncfile,'MAXV','sdn_uom_name',char('Metres per second'));
-    ncwriteatt(ncfile,'MAXV','sdn_uom_urn',char('SDN:P06::UVAA'));
-    ncwriteatt(ncfile,'MAXV','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'MAXV','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
-    ncwriteatt(ncfile,'MAXV','ancillary_variables',char('QCflag, MDFL_QC, VART_QC, CSPD_QC'));
-    
-    ncwriteatt(ncfile,'ERSC','long_name',char('Radial Sea Water Velocity Spatial Quality Count'));
-    ncwriteatt(ncfile,'ERSC','units',char('1'));
-    ncwriteatt(ncfile,'ERSC','scale_factor',double(1));
-    ncwriteatt(ncfile,'ERSC','add_offset',double(0));
-    ncwriteatt(ncfile,'ERSC','sdn_parameter_name',char(''));
-    ncwriteatt(ncfile,'ERSC','sdn_parameter_urn',char(''));
-    ncwriteatt(ncfile,'ERSC','sdn_uom_name',char('Dimensionless'));
-    ncwriteatt(ncfile,'ERSC','sdn_uom_urn',char('SDN:P06::UUUU'));
-    ncwriteatt(ncfile,'ERSC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'ERSC','valid_range',int16([0, 127]));
-    ncwriteatt(ncfile,'ERSC','ancillary_variables',char('QCflag'));
-    
-    ncwriteatt(ncfile,'ERTC','long_name',char('Radial Sea Water Velocity Temporal Quality Count'));
-    ncwriteatt(ncfile,'ERTC','units',char('1'));
-    ncwriteatt(ncfile,'ERTC','scale_factor',double(1));
-    ncwriteatt(ncfile,'ERTC','add_offset',double(0));
-    ncwriteatt(ncfile,'ERTC','sdn_parameter_name',char(''));
-    ncwriteatt(ncfile,'ERTC','sdn_parameter_urn',char(''));
-    ncwriteatt(ncfile,'ERTC','sdn_uom_name',char('Dimensionless'));
-    ncwriteatt(ncfile,'ERTC','sdn_uom_urn',char('SDN:P06::UUUU'));
-    ncwriteatt(ncfile,'ERTC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'ERTC','valid_range',int16([0, 127]));
-    ncwriteatt(ncfile,'ERTC','ancillary_variables',char('QCflag'));
-    
-    ncwriteatt(ncfile,'XDST','long_name',char('Eastward Distance From Instrument'));
-    ncwriteatt(ncfile,'XDST','units',char('km'));
-    ncwriteatt(ncfile,'XDST','scale_factor',double(scaleFactor));
-    ncwriteatt(ncfile,'XDST','add_offset',double(addOffset));
-    ncwriteatt(ncfile,'XDST','sdn_parameter_name',char(''));
-    ncwriteatt(ncfile,'XDST','sdn_parameter_urn',char(''));
-    ncwriteatt(ncfile,'XDST','sdn_uom_name',char('Kilometres'));
-    ncwriteatt(ncfile,'XDST','sdn_uom_urn',char('SDN:P06::ULKM'));
-    ncwriteatt(ncfile,'XDST','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'XDST','valid_range',int32([0, (1e3-addOffset)./scaleFactor]));
-    ncwriteatt(ncfile,'XDST','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
-    
-    ncwriteatt(ncfile,'YDST','long_name',char('Northward Distance From Instrument'));
-    ncwriteatt(ncfile,'YDST','units',char('km'));
-    ncwriteatt(ncfile,'YDST','scale_factor',double(scaleFactor));
-    ncwriteatt(ncfile,'YDST','add_offset',double(addOffset));
-    ncwriteatt(ncfile,'YDST','sdn_parameter_name',char(''));
-    ncwriteatt(ncfile,'YDST','sdn_parameter_urn',char(''));
-    ncwriteatt(ncfile,'YDST','sdn_uom_name',char('Kilometres'));
-    ncwriteatt(ncfile,'YDST','sdn_uom_urn',char('SDN:P06::ULKM'));
-    ncwriteatt(ncfile,'YDST','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'YDST','valid_range',int32([0, (1e3-addOffset)./scaleFactor]));
-    ncwriteatt(ncfile,'YDST','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
-    
-    ncwriteatt(ncfile,'SPRC','long_name',char('Radial Sea Water Velocity Cross Spectra Range Cell'));
-    ncwriteatt(ncfile,'SPRC','units',char('1'));
-    ncwriteatt(ncfile,'SPRC','scale_factor',double(1));
-    ncwriteatt(ncfile,'SPRC','add_offset',double(0));
-    ncwriteatt(ncfile,'SPRC','sdn_parameter_name',char(''));
-    ncwriteatt(ncfile,'SPRC','sdn_parameter_urn',char(''));
-    ncwriteatt(ncfile,'SPRC','sdn_uom_name',char('Dimensionless'));
-    ncwriteatt(ncfile,'SPRC','sdn_uom_urn',char('SDN:P06::UUUU'));
-    ncwriteatt(ncfile,'SPRC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
-    ncwriteatt(ncfile,'SPRC','valid_range',int16([0, 127]));
-    ncwriteatt(ncfile,'SPRC','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        ncwriteatt(ncfile,'ESPC','long_name',char('Radial Standard Deviation of Current Velocity over the Scatter Patch'));
+        ncwriteatt(ncfile,'ESPC','units',char('m s-1'));
+        ncwriteatt(ncfile,'ESPC','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'ESPC','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'ESPC','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'ESPC','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'ESPC','sdn_uom_name',char('Metres per second'));
+        ncwriteatt(ncfile,'ESPC','sdn_uom_urn',char('SDN:P06::UVAA'));
+        ncwriteatt(ncfile,'ESPC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'ESPC','valid_range',int16([(-32-addOffset)./scaleFactor, (32-addOffset)./scaleFactor]));
+        ncwriteatt(ncfile,'ESPC','ancillary_variables',char('QCflag, VART_QC'));
+        
+        ncwriteatt(ncfile,'ETMP','long_name',char('Radial Standard Deviation of Current Velocity over Coverage Period'));
+        ncwriteatt(ncfile,'ETMP','units',char('m s-1'));
+        ncwriteatt(ncfile,'ETMP','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'ETMP','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'ETMP','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'ETMP','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'ETMP','sdn_uom_name',char('Metres per second'));
+        ncwriteatt(ncfile,'ETMP','sdn_uom_urn',char('SDN:P06::UVAA'));
+        ncwriteatt(ncfile,'ETMP','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'ETMP','valid_range',int16([(-32-addOffset)./scaleFactor, (32-addOffset)./scaleFactor]));
+        ncwriteatt(ncfile,'ETMP','ancillary_variables',char('QCflag, VART_QC'));
+        
+        ncwriteatt(ncfile,'MINV','long_name',char('Radial Sea Water Velocity Away From Instrument Minimum'));
+        ncwriteatt(ncfile,'MINV','units',char('m s-1'));
+        ncwriteatt(ncfile,'MINV','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'MINV','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'MINV','sdn_parameter_name',char('Current speed (Eulerian) in the water body by directional range-gated radar'));
+        ncwriteatt(ncfile,'MINV','sdn_parameter_urn',char('SDN:P01::LCSAWVRD'));
+        ncwriteatt(ncfile,'MINV','sdn_uom_name',char('Metres per second'));
+        ncwriteatt(ncfile,'MINV','sdn_uom_urn',char('SDN:P06::UVAA'));
+        ncwriteatt(ncfile,'MINV','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'MINV','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
+        ncwriteatt(ncfile,'MINV','ancillary_variables',char('QCflag, MDFL_QC, VART_QC, CSPD_QC'));
+        
+        ncwriteatt(ncfile,'MAXV','long_name',char('Radial Sea Water Velocity Away From Instrument Maximum'));
+        ncwriteatt(ncfile,'MAXV','units',char('m s-1'));
+        ncwriteatt(ncfile,'MAXV','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'MAXV','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'MAXV','sdn_parameter_name',char('Current speed (Eulerian) in the water body by directional range-gated radar'));
+        ncwriteatt(ncfile,'MAXV','sdn_parameter_urn',char('SDN:P01::LCSAWVRD'));
+        ncwriteatt(ncfile,'MAXV','sdn_uom_name',char('Metres per second'));
+        ncwriteatt(ncfile,'MAXV','sdn_uom_urn',char('SDN:P06::UVAA'));
+        ncwriteatt(ncfile,'MAXV','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'MAXV','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
+        ncwriteatt(ncfile,'MAXV','ancillary_variables',char('QCflag, MDFL_QC, VART_QC, CSPD_QC'));
+        
+        ncwriteatt(ncfile,'ERSC','long_name',char('Radial Sea Water Velocity Spatial Quality Count'));
+        ncwriteatt(ncfile,'ERSC','units',char('1'));
+        ncwriteatt(ncfile,'ERSC','scale_factor',double(1));
+        ncwriteatt(ncfile,'ERSC','add_offset',double(0));
+        ncwriteatt(ncfile,'ERSC','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'ERSC','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'ERSC','sdn_uom_name',char('Dimensionless'));
+        ncwriteatt(ncfile,'ERSC','sdn_uom_urn',char('SDN:P06::UUUU'));
+        ncwriteatt(ncfile,'ERSC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'ERSC','valid_range',int16([0, 127]));
+        ncwriteatt(ncfile,'ERSC','ancillary_variables',char('QCflag'));
+        
+        ncwriteatt(ncfile,'ERTC','long_name',char('Radial Sea Water Velocity Temporal Quality Count'));
+        ncwriteatt(ncfile,'ERTC','units',char('1'));
+        ncwriteatt(ncfile,'ERTC','scale_factor',double(1));
+        ncwriteatt(ncfile,'ERTC','add_offset',double(0));
+        ncwriteatt(ncfile,'ERTC','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'ERTC','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'ERTC','sdn_uom_name',char('Dimensionless'));
+        ncwriteatt(ncfile,'ERTC','sdn_uom_urn',char('SDN:P06::UUUU'));
+        ncwriteatt(ncfile,'ERTC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'ERTC','valid_range',int16([0, 127]));
+        ncwriteatt(ncfile,'ERTC','ancillary_variables',char('QCflag'));
+        
+        ncwriteatt(ncfile,'XDST','long_name',char('Eastward Distance From Instrument'));
+        ncwriteatt(ncfile,'XDST','units',char('km'));
+        ncwriteatt(ncfile,'XDST','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'XDST','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'XDST','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'XDST','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'XDST','sdn_uom_name',char('Kilometres'));
+        ncwriteatt(ncfile,'XDST','sdn_uom_urn',char('SDN:P06::ULKM'));
+        ncwriteatt(ncfile,'XDST','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'XDST','valid_range',int32([0, (1e3-addOffset)./scaleFactor]));
+        ncwriteatt(ncfile,'XDST','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
+        
+        ncwriteatt(ncfile,'YDST','long_name',char('Northward Distance From Instrument'));
+        ncwriteatt(ncfile,'YDST','units',char('km'));
+        ncwriteatt(ncfile,'YDST','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'YDST','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'YDST','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'YDST','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'YDST','sdn_uom_name',char('Kilometres'));
+        ncwriteatt(ncfile,'YDST','sdn_uom_urn',char('SDN:P06::ULKM'));
+        ncwriteatt(ncfile,'YDST','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'YDST','valid_range',int32([0, (1e3-addOffset)./scaleFactor]));
+        ncwriteatt(ncfile,'YDST','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
+        
+        ncwriteatt(ncfile,'SPRC','long_name',char('Radial Sea Water Velocity Cross Spectra Range Cell'));
+        ncwriteatt(ncfile,'SPRC','units',char('1'));
+        ncwriteatt(ncfile,'SPRC','scale_factor',double(1));
+        ncwriteatt(ncfile,'SPRC','add_offset',double(0));
+        ncwriteatt(ncfile,'SPRC','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'SPRC','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'SPRC','sdn_uom_name',char('Dimensionless'));
+        ncwriteatt(ncfile,'SPRC','sdn_uom_urn',char('SDN:P06::UUUU'));
+        ncwriteatt(ncfile,'SPRC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'SPRC','valid_range',int16([0, 127]));
+        ncwriteatt(ncfile,'SPRC','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
+        
+    elseif(contains(sensorATT,'wera','IgnoreCase',true))
+        ncwriteatt(ncfile,'HCSS','long_name',char('Radial Variance of Current Velocity Over Coverage Period'));
+        ncwriteatt(ncfile,'HCSS','units',char('m2 s-2'));
+        ncwriteatt(ncfile,'HCSS','valid_min',int32((-10-addOffset)./(scaleFactor^2)));
+        ncwriteatt(ncfile,'HCSS','valid_max',int32((10-addOffset)./(scaleFactor^2)));
+        ncwriteatt(ncfile,'HCSS','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'HCSS','scale_factor',double(scaleFactor^2));
+        ncwriteatt(ncfile,'HCSS','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'HCSS','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'HCSS','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'HCSS','sdn_uom_name',char('Square metres per second squared'));
+        ncwriteatt(ncfile,'HCSS','sdn_uom_urn',char('SDN:P06::SQM2'));
+        ncwriteatt(ncfile,'HCSS','ancillary_variables',char('QCflag, VART_QC'));
+        
+        ncwriteatt(ncfile,'EACC','long_name',char('Radial Accuracy of Current Velocity Over Coverage Period'));
+        ncwriteatt(ncfile,'EACC','units',char('m s-1'));
+        ncwriteatt(ncfile,'EACC','valid_min',int16((-10-addOffset)./scaleFactor));
+        ncwriteatt(ncfile,'EACC','valid_max',int16((10-addOffset)./scaleFactor));
+        ncwriteatt(ncfile,'EACC','coordinates',char('TIME DEPH LATITUDE LONGITUDE'));
+        ncwriteatt(ncfile,'EACC','scale_factor',double(scaleFactor));
+        ncwriteatt(ncfile,'EACC','add_offset',double(addOffset));
+        ncwriteatt(ncfile,'EACC','sdn_parameter_name',char(''));
+        ncwriteatt(ncfile,'EACC','sdn_parameter_urn',char(''));
+        ncwriteatt(ncfile,'EACC','sdn_uom_name',char('Metres per second'));
+        ncwriteatt(ncfile,'EACC','sdn_uom_urn',char('SDN:P06::UVAA'));
+        ncwriteatt(ncfile,'EACC','ancillary_variables',char('QCflag, VART_QC'));
+    end
     
     ncwriteatt(ncfile,'NARX','long_name',char('Number of Receive Antennas'));
     ncwriteatt(ncfile,'NARX','units',char('1'));
@@ -1133,7 +1209,7 @@ try
         ncwriteatt(ncfile,'VART_QC','comment',char(['Test not applicable to Direction Finding systems. The Temporal Derivative test is applied.' ...
             'Threshold set to ' num2str(Radial_QC_params.TempDerThr.threshold) ' m/s. ']));
     elseif(contains(sensorATT,'wera','IgnoreCase',true))
-        ncwriteatt(ncfile,'VART_QC','comment',char(['Threshold set to ' num2str(Radial_QC_params.VarThr.threshold) ' m2/s2. ']));
+        ncwriteatt(ncfile,'VART_QC','comment',char(['Threshold set to ' num2str(Radial_QC_params.VarThr) ' m2/s2. ']));
     end
     ncwriteatt(ncfile,'VART_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'VART_QC','sdn_conventions_urn',char('SDN:L20::'));
@@ -1186,8 +1262,10 @@ end
 
 try
     ncwrite(ncfile, 'TIME', nc.time - datenum(1950,1,1));
-    ncwrite(ncfile, 'BEAR', nc.bear);
-    ncwrite(ncfile, 'RNGE', nc.rnge);
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        ncwrite(ncfile, 'BEAR', nc.bear);
+        ncwrite(ncfile, 'RNGE', nc.rnge);
+    end
     ncwrite(ncfile, 'DEPTH', nc.depth);
     ncwrite(ncfile, 'LATITUDE', nc.latitude);
     ncwrite(ncfile, 'LONGITUDE', nc.longitude);
@@ -1202,15 +1280,20 @@ try
     ncwrite(ncfile, 'DRVA', nc.drva);
     ncwrite(ncfile, 'EWCT', nc.ewct);
     ncwrite(ncfile, 'NSCT', nc.nsct);
-    ncwrite(ncfile, 'ESPC', nc.espc);
-    ncwrite(ncfile, 'ETMP', nc.etmp);
-    ncwrite(ncfile, 'MAXV', nc.maxv);
-    ncwrite(ncfile, 'MINV', nc.minv);
-    ncwrite(ncfile, 'ERSC', nc.ersc);
-    ncwrite(ncfile, 'ERTC', nc.ertc);
-    ncwrite(ncfile, 'XDST', nc.xdst);
-    ncwrite(ncfile, 'YDST', nc.ydst);
-    ncwrite(ncfile, 'SPRC', nc.sprc);
+    if(contains(sensorATT,'codar','IgnoreCase',true))
+        ncwrite(ncfile, 'ESPC', nc.espc);
+        ncwrite(ncfile, 'ETMP', nc.etmp);
+        ncwrite(ncfile, 'MAXV', nc.maxv);
+        ncwrite(ncfile, 'MINV', nc.minv);
+        ncwrite(ncfile, 'ERSC', nc.ersc);
+        ncwrite(ncfile, 'ERTC', nc.ertc);
+        ncwrite(ncfile, 'XDST', nc.xdst);
+        ncwrite(ncfile, 'YDST', nc.ydst);
+        ncwrite(ncfile, 'SPRC', nc.sprc);
+    elseif(contains(sensorATT,'wera','IgnoreCase',true))
+        ncwrite(ncfile, 'EACC', nc.eacc);
+        ncwrite(ncfile, 'HCSS', nc.hcss);
+    end
     ncwrite(ncfile, 'NARX', nc.narx);
     ncwrite(ncfile, 'NATX', nc.natx);
     ncwrite(ncfile, 'SLTR', nc.sltr);

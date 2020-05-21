@@ -18,8 +18,8 @@ clc
 setup_nctoolbox;
 
 % Setup JBDC driver for MySQL
-% javaaddpath('/home/lorenz/Toolboxes/Matlab_HFR_AddOn/mysql-connector-java-5.1.17.jar');
-javaaddpath('/home/radarcombine/Libraries/Matlab_HFR_AddOn/mysql-connector-java-5.1.17.jar');
+javaaddpath('/home/lorenz/Toolboxes/Matlab_HFR_AddOn/mysql-connector-java-5.1.17.jar');
+% javaaddpath('/home/radarcombine/Libraries/Matlab_HFR_AddOn/mysql-connector-java-5.1.17.jar');
 
 % Setup map colormap
 set(0,'DefaultFigureColormap',feval('jet'));
@@ -34,7 +34,8 @@ disp(['[' datestr(now) '] - - ' 'EU_HFR_Node_SDC_dataset_builder started.']);
 
 % mikadoHome = '/opt/mikado_V3.5.2';
 % mikadoHome = '/opt/mikado_V3.5.3';
-mikadoHome = '/opt/mikado_V3.6';
+% mikadoHome = '/opt/mikado_V3.6';
+mikadoHome = '/opt/mikado_V3.6.1';
 
 %%
 
@@ -61,7 +62,7 @@ end
 %%
 
 % TOTAL FILE PROCESSING
-SDC_totals;
+% SDC_totals;
 
 % RADIAL FILE PROCESSING
 SDC_radials;
