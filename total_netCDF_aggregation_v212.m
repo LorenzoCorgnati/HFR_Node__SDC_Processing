@@ -592,11 +592,6 @@ try
         'Datatype','int16',...
         'Format',ncfmt);
     
-    nccreate(ncfile,'SDN_REFERENCES',...
-        'Dimensions',{'STRING250', string250_dim},...
-        'Datatype','char',...
-        'Format',ncfmt);
-    
     nccreate(ncfile,'SDN_XLINK',...
         'Dimensions',{'STRING250',string250_dim, 'REFMAX',refMax_dim},...
         'Datatype','char',...
@@ -803,9 +798,7 @@ try
     
     ncwriteatt(ncfile,'SDN_EDMO_CODE','long_name',char('European Directory of Marine Organisations code for the CDI partner'));
     ncwriteatt(ncfile,'SDN_EDMO_CODE','units',char('1'));
-    
-    ncwriteatt(ncfile,'SDN_REFERENCES','long_name',char('Usage metadata reference'));
-    
+     
     ncwriteatt(ncfile,'SDN_XLINK','long_name',char('External resource linkages'));
     
     ncwriteatt(ncfile,'DEPTH','long_name',char('Depth'));
@@ -1136,7 +1129,6 @@ try
     ncwrite(ncfile,'SDN_STATION',platform_code');
     ncwrite(ncfile,'SDN_LOCAL_CDI_ID',dataID');
     ncwrite(ncfile,'SDN_EDMO_CODE',EDMO_code');
-    ncwrite(ncfile,'SDN_REFERENCES',TDS_catalog');
     ncwrite(ncfile,'SDN_XLINK',xlink');
     ncwrite(ncfile,'DEPTH',nc.depth);
     ncwrite(ncfile,'EWCT',nc.ewct);

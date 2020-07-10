@@ -35,7 +35,8 @@ disp(['[' datestr(now) '] - - ' 'EU_HFR_Node_SDC_dataset_builder started.']);
 % mikadoHome = '/opt/mikado_V3.5.2';
 % mikadoHome = '/opt/mikado_V3.5.3';
 % mikadoHome = '/opt/mikado_V3.6';
-mikadoHome = '/opt/mikado_V3.6.1';
+% mikadoHome = '/opt/mikado_V3.6.1';
+mikadoHome = '/opt/mikado_V3.6.2';
 
 %%
 
