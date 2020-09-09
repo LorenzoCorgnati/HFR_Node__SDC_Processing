@@ -472,7 +472,7 @@ try
     dataID = ['RV_HF_' platform_code '_' time_str];
     metadata_pageIndex = find(not(cellfun('isempty', strfind(networkFields, 'metadata_page'))));
     TDS_catalog = networkData{metadata_pageIndex};
-    xlink = ['<sdn_reference xlink:href="' TDS_catalog '" xlink:role="" xlink:type="URL"/>'];
+    xlink = ['<sdn_reference xlink:href="' TDS_catalog '" xlink:role="" xlink:type="SDN:L23::URL"/>'];
 catch err
     disp(['[' datestr(now) '] - - ERROR in ' mfilename ' -> ' err.message]);
     rnA_err = 1;
