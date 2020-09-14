@@ -794,7 +794,7 @@ try
     ncwriteatt(ncfile,'SDN_STATION','long_name',char('Grid label'));
     
     ncwriteatt(ncfile,'SDN_LOCAL_CDI_ID','long_name',char('SeaDataNet CDI identifier'));
-    ncwriteatt(ncfile,'SDN_LOCAL_CDI_ID','cf_role',char('timeseries_id'));
+    ncwriteatt(ncfile,'SDN_LOCAL_CDI_ID','cf_role',char('grid_id'));
     
     ncwriteatt(ncfile,'SDN_EDMO_CODE','long_name',char('European Directory of Marine Organisations code for the CDI partner'));
     ncwriteatt(ncfile,'SDN_EDMO_CODE','units',char('1'));
@@ -829,7 +829,7 @@ try
     ncwriteatt(ncfile,'EWCT','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
     %         ncwriteatt(ncfile,'EWCT','valid_min',double(-10.0));
     %         ncwriteatt(ncfile,'EWCT','valid_max',double(10.0));
-    ncwriteatt(ncfile,'EWCT','ancillary_variables',char('QCflag, VART_QC, CSPD_QC, DDNS_QC, GDOP_QC'));
+    ncwriteatt(ncfile,'EWCT','ancillary_variables',char('QCflag VART_QC CSPD_QC DDNS_QC GDOP_QC'));
     
     ncwriteatt(ncfile,'NSCT','long_name',char('South-north current component'));
     ncwriteatt(ncfile,'NSCT','standard_name',char('northward_sea_water_velocity'));
@@ -847,7 +847,7 @@ try
     ncwriteatt(ncfile,'NSCT','valid_range',int16([(-10-addOffset)./scaleFactor, (10-addOffset)./scaleFactor]));
     %         ncwriteatt(ncfile,'NSCT','valid_min',double(-10.0));
     %         ncwriteatt(ncfile,'NSCT','valid_max',double(10.0));
-    ncwriteatt(ncfile,'NSCT','ancillary_variables',char('QCflag, VART_QC, CSPD_QC, DDNS_QC, GDOP_QC'));
+    ncwriteatt(ncfile,'NSCT','ancillary_variables',char('QCflag VART_QC CSPD_QC DDNS_QC GDOP_QC'));
     
     ncwriteatt(ncfile,'EWCS','long_name',char('Standard Deviation of Surface Eastward Sea Water Velocity'));
     %        ncwriteatt(ncfile,'EWCS','standard_name',char('surface_eastward_sea_water_velocity_standard_error'));
@@ -862,7 +862,7 @@ try
     ncwriteatt(ncfile,'EWCS','sdn_parameter_urn',char('SDN:P01::SDEWZZZZ'));
     ncwriteatt(ncfile,'EWCS','sdn_uom_name',char('Metres per second'));
     ncwriteatt(ncfile,'EWCS','sdn_uom_urn',char('SDN:P06::UVAA'));
-    ncwriteatt(ncfile,'EWCS','ancillary_variables',char('QCflag, VART_QC'));
+    ncwriteatt(ncfile,'EWCS','ancillary_variables',char('QCflag VART_QC'));
     
     ncwriteatt(ncfile,'NSCS','long_name',char('Standard Deviation of Surface Northward Sea Water Velocity'));
     %        ncwriteatt(ncfile,'NSCS','standard_name',char('surface_northward_sea_water_velocity_standard_error'));
@@ -877,7 +877,7 @@ try
     ncwriteatt(ncfile,'NSCS','sdn_parameter_urn',char('SDN:P01::SDNSZZZZ'));
     ncwriteatt(ncfile,'NSCS','sdn_uom_name',char('Metres per second'));
     ncwriteatt(ncfile,'NSCS','sdn_uom_urn',char('SDN:P06::UVAA'));
-    ncwriteatt(ncfile,'NSCS','ancillary_variables',char('QCflag, VART_QC'));
+    ncwriteatt(ncfile,'NSCS','ancillary_variables',char('QCflag VART_QC'));
     
     if(contains(sensorATT,'codar','IgnoreCase',true))
         ncwriteatt(ncfile,'CCOV','long_name',char('Covariance of Surface Sea Water Velocity'));
@@ -907,7 +907,7 @@ try
         ncwriteatt(ncfile,'UACC','sdn_parameter_urn',char(''));
         ncwriteatt(ncfile,'UACC','sdn_uom_name',char('Metres per second'));
         ncwriteatt(ncfile,'UACC','sdn_uom_urn',char('SDN:P06::UVAA'));
-        ncwriteatt(ncfile,'UACC','ancillary_variables',char('QCflag, VART_QC'));
+        ncwriteatt(ncfile,'UACC','ancillary_variables',char('QCflag VART_QC'));
         
         ncwriteatt(ncfile,'VACC','long_name',char('Accuracy of Surface Northward Sea Water Velocity'));
         ncwriteatt(ncfile,'VACC','units',char('m s-1'));
@@ -921,7 +921,7 @@ try
         ncwriteatt(ncfile,'VACC','sdn_parameter_urn',char(''));
         ncwriteatt(ncfile,'VACC','sdn_uom_name',char('Metres per second'));
         ncwriteatt(ncfile,'VACC','sdn_uom_urn',char('SDN:P06::UVAA'));
-        ncwriteatt(ncfile,'VACC','ancillary_variables',char('QCflag, VART_QC'));
+        ncwriteatt(ncfile,'VACC','ancillary_variables',char('QCflag VART_QC'));
     end
     
     ncwriteatt(ncfile,'GDOP','long_name',char('Geometrical Dilution Of Precision'));
@@ -942,14 +942,14 @@ try
     ncwriteatt(ncfile,'GDOP','sdn_parameter_urn',char(''));
     ncwriteatt(ncfile,'GDOP','sdn_uom_name',char('Dimensionless'));
     ncwriteatt(ncfile,'GDOP','sdn_uom_urn',char('SDN:P06::UUUU'));
-    ncwriteatt(ncfile,'GDOP','ancillary_variables',char('QCflag, GDOP_QC'));
+    ncwriteatt(ncfile,'GDOP','ancillary_variables',char('QCflag GDOP_QC'));
     
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','long_name',char('Time SeaDataNet Quality Flag'));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','units',char('1'));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'TIME_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
+    ncwriteatt(ncfile,'TIME_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','add_offset',int8(0));
@@ -959,7 +959,7 @@ try
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'POSITION_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
+    ncwriteatt(ncfile,'POSITION_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','add_offset',int8(0));
@@ -969,7 +969,7 @@ try
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
+    ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','add_offset',int8(0));
@@ -979,7 +979,7 @@ try
     ncwriteatt(ncfile,'QCflag','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'QCflag','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'QCflag','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'QCflag','Conventions',char('SeaDataNet measurand qualifier flags.'));
+    ncwriteatt(ncfile,'QCflag','Conventions',char('SeaDataNet measurand qualifier flags'));
     ncwriteatt(ncfile,'QCflag','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'QCflag','scale_factor',int8(1));
     ncwriteatt(ncfile,'QCflag','add_offset',int8(0));
@@ -995,7 +995,7 @@ try
     elseif(contains(sensorATT,'wera','IgnoreCase',true))
         ncwriteatt(ncfile,'VART_QC','comment',char(['Threshold set to ' num2str(Total_QC_params.VarThr) ' m2/s2. ']));
     end
-    ncwriteatt(ncfile,'VART_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
+    ncwriteatt(ncfile,'VART_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
     ncwriteatt(ncfile,'VART_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'VART_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'VART_QC','add_offset',int8(0));
@@ -1006,7 +1006,7 @@ try
     ncwriteatt(ncfile,'GDOP_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'GDOP_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
     ncwriteatt(ncfile,'GDOP_QC','comment',char(['Threshold set to ' num2str(Total_QC_params.GDOPThr) '.']));
-    ncwriteatt(ncfile,'GDOP_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
+    ncwriteatt(ncfile,'GDOP_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
     ncwriteatt(ncfile,'GDOP_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'GDOP_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'GDOP_QC','add_offset',int8(0));
@@ -1017,7 +1017,7 @@ try
     ncwriteatt(ncfile,'DDNS_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'DDNS_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
     ncwriteatt(ncfile,'DDNS_QC','comment',char(['Threshold set to ' num2str(Total_QC_params.DataDensityThr) ' radials.']));
-    ncwriteatt(ncfile,'DDNS_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
+    ncwriteatt(ncfile,'DDNS_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
     ncwriteatt(ncfile,'DDNS_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'DDNS_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'DDNS_QC','add_offset',int8(0));
@@ -1028,7 +1028,7 @@ try
     ncwriteatt(ncfile,'CSPD_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'CSPD_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
     ncwriteatt(ncfile,'CSPD_QC','comment',char(['Threshold set to ' num2str(Total_QC_params.VelThr) ' m/s.']));
-    ncwriteatt(ncfile,'CSPD_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
+    ncwriteatt(ncfile,'CSPD_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
     ncwriteatt(ncfile,'CSPD_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'CSPD_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'CSPD_QC','add_offset',int8(0));

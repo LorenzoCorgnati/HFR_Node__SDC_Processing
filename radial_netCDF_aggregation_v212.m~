@@ -992,7 +992,7 @@ try
         ncwriteatt(ncfile,'XDST','sdn_uom_urn',char('SDN:P06::ULKM'));
         ncwriteatt(ncfile,'XDST','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
         ncwriteatt(ncfile,'XDST','valid_range',int32([0, (1e3-addOffset)./scaleFactor]));
-        ncwriteatt(ncfile,'XDST','ancillary_variables',char('QCflag OWTR_QC MDFL_QC CSPD_QC VART_QC'));
+        ncwriteatt(ncfile,'XDST','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
         
         ncwriteatt(ncfile,'YDST','long_name',char('Northward Distance From Instrument'));
         ncwriteatt(ncfile,'YDST','units',char('km'));
@@ -1004,7 +1004,7 @@ try
         ncwriteatt(ncfile,'YDST','sdn_uom_urn',char('SDN:P06::ULKM'));
         ncwriteatt(ncfile,'YDST','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
         ncwriteatt(ncfile,'YDST','valid_range',int32([0, (1e3-addOffset)./scaleFactor]));
-        ncwriteatt(ncfile,'YDST','ancillary_variables',char('QCflag OWTR_QC MDFL_QC CSPD_QC VART_QC'));
+        ncwriteatt(ncfile,'YDST','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
         
         ncwriteatt(ncfile,'SPRC','long_name',char('Radial Sea Water Velocity Cross Spectra Range Cell'));
         ncwriteatt(ncfile,'SPRC','units',char('1'));
@@ -1016,7 +1016,7 @@ try
         ncwriteatt(ncfile,'SPRC','sdn_uom_urn',char('SDN:P06::UUUU'));
         ncwriteatt(ncfile,'SPRC','coordinates',char('TIME DEPTH LATITUDE LONGITUDE'));
         ncwriteatt(ncfile,'SPRC','valid_range',int16([0, 127]));
-        ncwriteatt(ncfile,'SPRC','ancillary_variables',char('QCflag OWTR_QC MDFL_QC CSPD_QC VART_QC'));
+        ncwriteatt(ncfile,'SPRC','ancillary_variables',char('QCflag, OWTR_QC, MDFL_QC, CSPD_QC, VART_QC'));
         
     elseif(contains(sensorATT,'wera','IgnoreCase',true))
         ncwriteatt(ncfile,'HCSS','long_name',char('Radial Variance of Current Velocity Over Coverage Period'));
@@ -1030,7 +1030,7 @@ try
         ncwriteatt(ncfile,'HCSS','sdn_parameter_urn',char(''));
         ncwriteatt(ncfile,'HCSS','sdn_uom_name',char('Square metres per second squared'));
         ncwriteatt(ncfile,'HCSS','sdn_uom_urn',char('SDN:P06::SQM2'));
-        ncwriteatt(ncfile,'HCSS','ancillary_variables',char('QCflag VART_QC'));
+        ncwriteatt(ncfile,'HCSS','ancillary_variables',char('QCflag, VART_QC'));
         
         ncwriteatt(ncfile,'EACC','long_name',char('Radial Accuracy of Current Velocity Over Coverage Period'));
         ncwriteatt(ncfile,'EACC','units',char('m s-1'));
@@ -1043,7 +1043,7 @@ try
         ncwriteatt(ncfile,'EACC','sdn_parameter_urn',char(''));
         ncwriteatt(ncfile,'EACC','sdn_uom_name',char('Metres per second'));
         ncwriteatt(ncfile,'EACC','sdn_uom_urn',char('SDN:P06::UVAA'));
-        ncwriteatt(ncfile,'EACC','ancillary_variables',char('QCflag VART_QC'));
+        ncwriteatt(ncfile,'EACC','ancillary_variables',char('QCflag, VART_QC'));
     end
     
     ncwriteatt(ncfile,'NARX','long_name',char('Number of Receive Antennas'));
@@ -1133,7 +1133,7 @@ try
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'TIME_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'TIME_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'TIME_SEADATANET_QC','add_offset',int8(0));
@@ -1143,7 +1143,7 @@ try
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'POSITION_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'POSITION_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'POSITION_SEADATANET_QC','add_offset',int8(0));
@@ -1154,7 +1154,7 @@ try
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'DEPTH_SEADATANET_QC','add_offset',int8(0));
@@ -1164,7 +1164,7 @@ try
     ncwriteatt(ncfile,'QCflag','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'QCflag','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'QCflag','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'QCflag','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'QCflag','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'QCflag','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'QCflag','scale_factor',int8(1));
     ncwriteatt(ncfile,'QCflag','add_offset',int8(0));
@@ -1175,7 +1175,7 @@ try
     ncwriteatt(ncfile,'OWTR_QC','valid_range',int8([48 65]));
     ncwriteatt(ncfile,'OWTR_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'OWTR_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
-    ncwriteatt(ncfile,'OWTR_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'OWTR_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'OWTR_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'OWTR_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'OWTR_QC','add_offset',int8(0));
@@ -1187,7 +1187,7 @@ try
     ncwriteatt(ncfile,'MDFL_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'MDFL_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
     ncwriteatt(ncfile,'MDFL_QC','comment', ['Threshold set to ' num2str(Radial_QC_params.MedFilt(1)) ' km, ' num2str(Radial_QC_params.MedFilt(2)) ' deg, ' num2str(Radial_QC_params.MedFilt(3)) ' m/s, ']);
-    ncwriteatt(ncfile,'MDFL_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'MDFL_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'MDFL_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'MDFL_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'MDFL_QC','add_offset',int8(0));
@@ -1204,7 +1204,7 @@ try
     elseif(contains(sensorATT,'wera','IgnoreCase',true))
         ncwriteatt(ncfile,'VART_QC','comment',char(['Threshold set to ' num2str(Radial_QC_params.VarThr) ' m2/s2. ']));
     end
-    ncwriteatt(ncfile,'VART_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'VART_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'VART_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'VART_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'VART_QC','add_offset',int8(0));
@@ -1216,7 +1216,7 @@ try
     ncwriteatt(ncfile,'CSPD_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'CSPD_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
     ncwriteatt(ncfile,'CSPD_QC','comment',char(['Threshold set to ' num2str(Radial_QC_params.VelThr) ' m/s.']));
-    ncwriteatt(ncfile,'CSPD_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'CSPD_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'CSPD_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'CSPD_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'CSPD_QC','add_offset',int8(0));
@@ -1228,7 +1228,7 @@ try
     ncwriteatt(ncfile,'AVRB_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'AVRB_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
     ncwriteatt(ncfile,'AVRB_QC','comment',char(['Thresholds set to [' num2str(Radial_QC_params.AvgRadBear(1)) '-' num2str(Radial_QC_params.AvgRadBear(2)) '] deg.']));
-    ncwriteatt(ncfile,'AVRB_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'AVRB_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'AVRB_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'AVRB_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'AVRB_QC','add_offset',int8(0));
@@ -1239,7 +1239,7 @@ try
     ncwriteatt(ncfile,'RDCT_QC','flag_values',int8([48 49 50 51 52 53 54 55 56 57 65]));
     ncwriteatt(ncfile,'RDCT_QC','flag_meanings',char('no_quality_control good_value probably_good_value probably_bad_value bad_value changed_value value_below_detection value_in_excess interpolated_value missing_value value_phenomenon_uncertain'));
     ncwriteatt(ncfile,'RDCT_QC','comment',char(['Thresholds set to ' num2str(Radial_QC_params.RadCnt) ' vectors.']));
-    ncwriteatt(ncfile,'RDCT_QC','Conventions',char('SeaDataNet measurand qualifier flags'));
+    ncwriteatt(ncfile,'RDCT_QC','Conventions',char('SeaDataNet measurand qualifier flags.'));
     ncwriteatt(ncfile,'RDCT_QC','sdn_conventions_urn',char('SDN:L20::'));
     ncwriteatt(ncfile,'RDCT_QC','scale_factor',int8(1));
     ncwriteatt(ncfile,'RDCT_QC','add_offset',int8(0));
