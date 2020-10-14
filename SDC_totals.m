@@ -146,10 +146,10 @@ try
         end
         
         % Create the aggregated netCDF dataset
-        % v2.1.2
-        [tnA_err, datasetName, datasetSize, startDate, endDate, sdnLocalCDIid] = total_netCDF_aggregation_v212(network_data(network_idx,:),network_columnNames,station_data,station_columnNames,timeSpan);
+        % v2.2
+        [tnA_err, datasetName, datasetSize, startDate, endDate, sdnLocalCDIid] = total_netCDF_aggregation_v22(network_data(network_idx,:),network_columnNames,station_data,station_columnNames,timeSpan);
         if(tnA_err==0)
-            disp(['[' datestr(now) '] - - ' datasetName ' total v2.1.2 dataset successfully created and stored.']);
+            disp(['[' datestr(now) '] - - ' datasetName ' total v2.2 dataset successfully created and stored.']);
         end
         
         % Insert generated total dataset info in total_SDCnetCDF_tb table

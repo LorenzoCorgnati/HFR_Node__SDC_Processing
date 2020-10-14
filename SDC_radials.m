@@ -156,10 +156,10 @@ for network_idx=1:numNetworks
     for station_idx=1:numStations
         SDCR = 0;
         % Create the aggregated netCDF dataset
-        % v2.1.2
-        [rnA_err, datasetName, datasetSize, startDate, endDate, sdnLocalCDIid] = radial_netCDF_aggregation_v212(network_data(network_idx,:),network_columnNames,station_data(station_idx,:),station_columnNames,timeSpan);
+        % v2.2
+        [rnA_err, datasetName, datasetSize, startDate, endDate, sdnLocalCDIid] = radial_netCDF_aggregation_v22(network_data(network_idx,:),network_columnNames,station_data(station_idx,:),station_columnNames,timeSpan);
         if(rnA_err==0)
-            disp(['[' datestr(now) '] - - ' datasetName ' radial v2.1.2 dataset successfully created and stored.']);
+            disp(['[' datestr(now) '] - - ' datasetName ' radial v2.2 dataset successfully created and stored.']);
         end
         
         % Insert generated radial dataset info in radial_SDCnetCDF_tb table

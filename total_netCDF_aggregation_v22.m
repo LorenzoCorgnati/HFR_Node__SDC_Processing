@@ -1,9 +1,9 @@
-%% total_netCDF_aggregation_v212.m
+%% total_netCDF_aggregation_v22.m
 % This function accesses the THREDDS catalog of the HFR networks via
 % OpenDAP and creates HFR total aggregated netCDF datasets compliant to the
 % European standard data model (that integrates CMEMS-INSTAC and SDC CF extension
 % requirements) for distribution on the SeaDataNet infrastructure.
-% The v211 version creates aggregated dataset according the the v2.1.2
+% The v22 version creates aggregated dataset according the the v2.2
 % version of the European standard data model.
 
 % INPUT:
@@ -31,9 +31,9 @@
 % E-mail: lorenzo.corgnati@sp.ismar.cnr.it
 %%
 
-function [tnA_err, ncFileNoPath, ncFilesize, tStart, tEnd, dataID] = total_netCDF_aggregation_v212(networkData,networkFields,stationData,stationFields,timeSpan)
+function [tnA_err, ncFileNoPath, ncFilesize, tStart, tEnd, dataID] = total_netCDF_aggregation_v22(networkData,networkFields,stationData,stationFields,timeSpan)
 
-disp(['[' datestr(now) '] - - ' 'total_netCDF_aggregation_v212.m started.']);
+disp(['[' datestr(now) '] - - ' 'total_netCDF_aggregation_v22.m started.']);
 
 tnA_err = 0;
 
@@ -264,7 +264,7 @@ try
         nc.cspd_qc = ncread(SDC_OpenDAP_data_url,'CSPD_QC',[1,1,1,min(iTime)],[length(nc.longitude),length(nc.latitude),length(nc.depth),length(iTime)]);
     else
         disp(['[' datestr(now) '] - - No data available for the selected period.']);
-        disp(['[' datestr(now) '] - - ' 'total_netCDF_aggregation_v212.m successfully executed.']);
+        disp(['[' datestr(now) '] - - ' 'total_netCDF_aggregation_v22.m successfully executed.']);
         tnA_err = 1;
         return
     end
@@ -1197,7 +1197,7 @@ try
     ncwriteatt(ncfile, '/','time_coverage_start',char(timeCoverageStart));
     ncwriteatt(ncfile, '/','time_coverage_end',char(timeCoverageEnd));
     % Conventions used
-    ncwriteatt(ncfile,'/','format_version',char('v2.1.2'));
+    ncwriteatt(ncfile,'/','format_version',char('v2.2'));
     ncwriteatt(ncfile,'/','Conventions',char('CF-1.6, OceanSITES Manual 1.2, SeaDataNet_1.0, INSPIRE'));
     % Publication information
     ncwriteatt(ncfile,'/','update_interval',char('void'));
@@ -1288,7 +1288,7 @@ end
 %%
 
 if(tnA_err==0)
-    disp(['[' datestr(now) '] - - ' 'total_netCDF_aggregation_v212.m successfully executed.']);
+    disp(['[' datestr(now) '] - - ' 'total_netCDF_aggregation_v22.m successfully executed.']);
 end
 
 return

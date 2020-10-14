@@ -1,9 +1,9 @@
-%% radial_netCDF_aggregation_v212.m
+%% radial_netCDF_aggregation_v22.m
 % This function accesses the THREDDS catalog of the HFR networks via
 % OpenDAP and creates HFR radial aggregated netCDF datasets compliant to the
 % European standard data model (that integrates CMEMS-INSTAC and SDC CF extension
 % requirements) for distribution on the SeaDataNet infrastructure.
-% The v212 version creates aggregated dataset according the the v2.1.2
+% The v22 version creates aggregated dataset according the the v2.2
 % version of the European standard data model.
 
 % INPUT:
@@ -31,9 +31,9 @@
 % E-mail: lorenzo.corgnati@sp.ismar.cnr.it
 %%
 
-function [rnA_err, ncFileNoPath, ncFilesize, tStart, tEnd, dataID] = radial_netCDF_aggregation_v212(networkData,networkFields,stationData,stationFields,timeSpan)
+function [rnA_err, ncFileNoPath, ncFilesize, tStart, tEnd, dataID] = radial_netCDF_aggregation_v22(networkData,networkFields,stationData,stationFields,timeSpan)
 
-disp(['[' datestr(now) '] - - ' 'radial_netCDF_aggregation_v212.m started.']);
+disp(['[' datestr(now) '] - - ' 'radial_netCDF_aggregation_v22.m started.']);
 
 rnA_err = 0;
 
@@ -1364,7 +1364,7 @@ try
     ncwriteatt(ncfile, '/', 'time_coverage_start', char(timeCoverageStart));
     ncwriteatt(ncfile, '/', 'time_coverage_end', char(timeCoverageEnd));
     % Conventions used
-    ncwriteatt(ncfile, '/', 'format_version', char('v2.1.2'));
+    ncwriteatt(ncfile, '/', 'format_version', char('v2.2'));
     ncwriteatt(ncfile, '/', 'Conventions', char('CF-1.6, OceanSITES Manual 1.2, SeaDataNet_1.0, INSPIRE'));
     % Publication information
     ncwriteatt(ncfile, '/', 'update_interval', char('void'));
@@ -1454,7 +1454,7 @@ end
 %%
 
 if(rnA_err==0)
-    disp(['[' datestr(now) '] - - ' 'radial_netCDF_aggregation_v212.m successfully executed.']);
+    disp(['[' datestr(now) '] - - ' 'radial_netCDF_aggregation_v22.m successfully executed.']);
 end
 
 return

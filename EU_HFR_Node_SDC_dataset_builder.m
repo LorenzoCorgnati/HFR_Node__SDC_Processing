@@ -63,7 +63,7 @@ end
 %%
 
 % TOTAL FILE PROCESSING
-% SDC_totals;
+SDC_totals;
 
 % RADIAL FILE PROCESSING
 SDC_radials;
