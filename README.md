@@ -42,6 +42,10 @@ The required toolboxes are:
     mysql-connector-java-5.1.17 driver (https://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.17);
     Rdir (http://www.mathworks.com/matlabcentral/fileexchange/19550-recursive-directory-listing);
     uniqueStrCell (https://www.mathworks.com/matlabcentral/fileexchange/50476-unique-for-cell-array-of-string).
+    
+Cite as:
+Lorenzo Corgnati. (2019). EU_HFR_NODE_SDC_Processing. Zenodo. https://doi.org/10.5281/zenodo.3855468
+
 
 Author: Lorenzo Corgnati
 
